@@ -1,0 +1,16 @@
+[
+    {
+        "component": "Foo",
+        "inputs": [
+            "Bar"
+        ],
+        "outputs": []
+    },
+    {
+        "component": "Bar",
+        "inputs": [],
+        "outputs": [
+            "Foo"
+        ]
+    }
+]

@@ -1,0 +1,47 @@
+[
+    {
+        "component": "BusinessLogic",
+        "inputs": [
+            "Start",
+            "Stop",
+            "Torque",
+            "Velocity"
+        ],
+        "outputs": [
+            "Command"
+        ]
+    },
+    {
+        "component": "Actuator",
+        "inputs": [
+            "Command"
+        ],
+        "outputs": [
+            "Torque"
+        ]
+    },
+    {
+        "component": "Recorder",
+        "inputs": [
+            "Command",
+            "Velocity",
+            "Torque"
+        ],
+        "outputs": []
+    },
+    {
+        "component": "UserInterface",
+        "inputs": [],
+        "outputs": [
+            "Start",
+            "Stop"
+        ]
+    },
+    {
+        "component": "Sensor",
+        "inputs": [],
+        "outputs": [
+            "Velocity"
+        ]
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "component": "Foo",
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "component": "Foo",
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "component": "Bar",
+        "inputs": [],
+        "outputs": []
+    },
+    {
+        "component": "Bar",
+        "inputs": [],
+        "outputs": []
+    }
+]

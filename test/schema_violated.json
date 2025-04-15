@@ -1,0 +1,8 @@
+[
+    {
+        "component": "Foo",
+        "inputs": [],
+        "outputs": [],
+        "illegal_property": "Bar"
+    }
+]
