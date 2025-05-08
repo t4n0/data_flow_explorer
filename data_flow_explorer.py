@@ -3,6 +3,7 @@ import collections
 import graphviz as gv
 import json
 import jsonschema
+import re
 import streamlit as sl
 import tempfile
 
@@ -118,14 +119,17 @@ def visualize_graph(visualized_options: list, data_flow: dict):
     for item in data_flow:
         if item[COMPONENT] in visualized_options:
             G.node(item[COMPONENT], shape="box", color="magenta")
-            for input in item[INPUTS]:
-                if input in visualized_options:
-                    G.node(input, shape="ellipse", color="cyan")
-                    G.edge(input, item[COMPONENT])
-            for output in item[OUTPUTS]:
-                if output in visualized_options:
-                    G.node(output, shape="ellipse", color="cyan")
-                    G.edge(item[COMPONENT], output)
+        for input in item[INPUTS]:
+            if input in visualized_options:
+                G.node(input, shape="ellipse", color="cyan")
+            if item[COMPONENT] in visualized_options and input in visualized_options:
+                G.edge(input, item[COMPONENT])
+        for output in item[OUTPUTS]:
+            if output in visualized_options:
+                G.node(output, shape="ellipse", color="cyan")
+            if item[COMPONENT] in visualized_options and output in visualized_options:
+                G.edge(item[COMPONENT], output)
+
     with tempfile.TemporaryDirectory() as temporary_directory:
         sl.image(G.render(directory=temporary_directory), use_container_width=True)
 
@@ -147,10 +151,15 @@ def visualize(data_flow: dict, file_path: str):
     with tab_partial:
         selected_options = set(
             sl.multiselect(
-                label="select which component or data to visualize",
+                label="show components or data that are selected",
                 options=all_options,
                 placeholder="click to select",
             )
+        )
+
+        hide_regex = sl.text_input(
+            label="hide components or data that match this regex",
+            placeholder="click to type",
         )
 
         visualized_options = selected_options.copy()
@@ -163,9 +172,16 @@ def visualize(data_flow: dict, file_path: str):
                 if item[COMPONENT] in selected_options or output in selected_options:
                     visualized_options.add(item[COMPONENT])
                     visualized_options.add(output)
+
+        if hide_regex:
+            hide_regex = re.compile(hide_regex)
+            visualized_options = [
+                option for option in visualized_options if not hide_regex.search(option)
+            ]
+
         visualize_graph(visualized_options, data_flow)
 
-    with tab_full:        
+    with tab_full:
         visualize_graph(all_options, data_flow)
 
     with tab_legend:
